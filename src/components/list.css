@@ -1,0 +1,16 @@
+input {
+	padding: 10px;
+	max-width: 200px;
+}
+
+ul {
+	list-style-type: none;
+}
+
+.add-button {
+	font-size: 20px;
+	margin-left: 30px;
+	color: black;
+	border: none;
+	background-color: rgb(35, 215, 35);
+}
