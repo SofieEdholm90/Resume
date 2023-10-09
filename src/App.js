@@ -1,30 +1,34 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Menu from './components/menu'
+import TopNavigation from './components/navigation/topbar'
 import ImageList from './components/imageList'
-import Button from './components/button'
 import BottomNavigation from './components/bottomNavigation'
 import List from './components/list'
 import Login from './components/login'
-
 const App = () => {
+
+
 	return (
 		<Router>
 			<div className='App'>
-				<Menu />
+				{window.location.pathname !== '/' && (
+					<TopNavigation />
+				)}
 				<Routes>
-					<Route path='/' element={<ImageList />} />
+					<Route path='/' element={<Login />} />
 					<Route path='/list' element={<List />} />
-					<Route path='/login' element={<Login />} />{' '}
+					<Route path='/login' element={<ImageList />} />{' '}
 					{/* Inkludera Login-komponenten här */}
 				</Routes>
 				<Routes>
-					<Route path='/' element={<Button />} />
 					<Route path='/list' element={null} />
 					<Route path='/login' element={null} />
 				</Routes>
 				<Routes>
-					<Route path='/' element={<BottomNavigation />} />
+					{window.location.pathname !== '/' && (
+						<Route path='/' element={<BottomNavigation />} />
+					)}
+
 					<Route path='/list' element={null} />
 					<Route path='/login' element={null} />
 				</Routes>

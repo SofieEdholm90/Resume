@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import './list.css'
-import CloseIcon from '@mui/icons-material/Close'
-import Paper from '@mui/material/Paper'
-import { purple } from '@mui/material/colors'
-
+import { Paper, Button, TextField, Typography, ListItem, IconButton, ListItemText, List } from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
 const centerContentStyle = {
 	display: 'flex',
 	flexDirection: 'column',
@@ -15,11 +13,17 @@ const centerContentStyle = {
 	backgroundRepeat: 'no-repeat', // Undvik upprepning av bakgrundsbilden
 }
 
-function List() {
+function ListPage() {
 	const [newItem, setNewItem] = useState('')
 	const [items, setItems] = useState([])
 
 	function addItem() {
+
+		if (newItem.length < 1) {
+			alert('du måste skriva en text')
+			return
+		}
+
 		const item = {
 			id: Math.floor(Math.random() * 1000),
 			text: newItem,
@@ -38,45 +42,63 @@ function List() {
 			<Paper
 				elevation={3}
 				sx={{
-					padding: '5rem',
+					p: 6,
+					pt: 2,
 					flexDirection: 'column',
-					backgroundColor: purple['600'],
 				}}
 			>
-				<h1>To Do List</h1>
-				<input
-					type='text'
-					placeholder='Add an item...'
-					value={newItem}
-					onChange={(e) => setNewItem(e.target.value)}
-				/>
+				<Typography align={'center'} variant="h4" sx={{
+					mb: 2
+				}}>
+					To Do List
+				</Typography>
+				<TextField autoComplete='off' id="outlined-basic" label="Add an item..." variant="outlined" value={newItem} onChange={(e) => setNewItem(e.target.value)} />
 
-				<button className='add-button' onClick={() => addItem()}>
+
+				<Button sx={{
+					marginLeft: 2,
+					mt: 1
+				}} variant="contained" onClick={() => addItem()}>
 					Add
-				</button>
+				</Button>
 
-				<ul>
-					{items.map((item) => {
-						return (
-							<li key={item.id}>
-								{item.text}
-
-								<CloseIcon
-									title='Delete'
-									color='red'
-									onClick={() => deleteItem(item.id)}
-									sx={{
-										color: 'red',
-										cursor: 'pointer',
-									}}
-								/>
-							</li>
-						)
-					})}
-				</ul>
 			</Paper>
+
+			{items.length > 0 && (
+				<Paper elevation={3}
+					sx={{
+						p: 1,
+						pt: 2,
+						flexDirection: 'column',
+						mt: 4,
+						minWidth: 400
+					}}>
+					<List sx={{
+						width: '100%'
+					}}>
+						{items.map((item) => {
+							return (
+								<ListItem
+									key={item.id}
+									secondaryAction={
+										<IconButton edge="end" aria-label="delete">
+											<DeleteIcon onClick={() => deleteItem(item.id)} />
+										</IconButton>
+									}
+								>
+									<ListItemText
+										primary={item.text}
+									/>
+								</ListItem>
+							)
+						})}
+					</List>
+				</Paper>
+			)}
+
+
 		</div>
 	)
 }
 
-export default List
+export default ListPage

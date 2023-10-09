@@ -4,6 +4,7 @@ import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
+import mockDB from '../mockDB/users.json'
 
 export default function SimplePaper() {
 	const navigate = useNavigate()
@@ -11,10 +12,20 @@ export default function SimplePaper() {
 	const [password, setPassword] = React.useState('')
 
 	const handleLogin = () => {
-		// Validera inloggningsuppgifterna
-		if (username === 'admin' && password === 'password') {
-			navigate('/') // Navigera till rotvägen efter inloggning
-		} else {
+		let validUserAndPassword = false
+
+		// loop through the users and check if username and password match.
+		mockDB.forEach((user) => {
+			if (username.toLowerCase() === user.userName.toLowerCase() && password === user.password) {
+				validUserAndPassword = true
+			}
+		})
+
+		// Navigera till rotvägen efter inloggning
+		if (validUserAndPassword) {
+			navigate('/list')
+		}
+		else {
 			alert('Fel användarnamn eller lösenord!')
 		}
 	}
@@ -55,7 +66,9 @@ export default function SimplePaper() {
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
 				/>
-				<Button variant='contained' color='primary' onClick={handleLogin}>
+				<Button sx={{
+					mt: 1
+				}} variant='contained' color='primary' onClick={handleLogin}>
 					Logga in
 				</Button>
 			</Paper>
